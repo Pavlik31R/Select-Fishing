@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}Магазин{% endblock %}
+
+{% block content %}
+<h1 class="text-3xl font-bold mb-4">Магазин</h1>
+
+<style>
+    html, body {
+        height: 100%; 
+        margin: 0; 
+    }
+
+    body {
+        background-image: url('/static/images/river.jpg'); 
+        background-size: cover; 
+        background-position: center; 
+        background-repeat: no-repeat; 
+        background-attachment: fixed; 
+    }
+
+    .custom-image-size {
+        max-width: 100%;  
+        height: auto;    
+    }
+
+    .product-container {
+        display: flex;
+        flex-direction: column;  
+        justify-content: space-between; 
+        height: 100%; 
+        background-color: rgba(255, 255, 255, 0.8); 
+        border-radius: 8px; 
+    }
+
+    .product-info {
+        margin-top: auto;
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .pagination a {
+        padding: 10px 15px;
+        margin: 0 5px;
+        background-color: #333;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+
+    .pagination a:hover {
+        background-color: #555;
+    }
+
+    .pagination span {
+        padding: 10px 15px;
+        margin: 0 5px;
+    }
+</style>
+
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+    {% for product in products %}
+    <div class="bg-white p-4 shadow-md rounded-lg relative group product-container">
+        <img src="{{ product.image }}" alt="{{ product.name }}" class="custom-image-size object-cover mb-2">
+        <div class="product-info">
+            <h2 class="text-xl font-semibold">{{ product.name }}</h2>
+            <p class="text-gray-600">{{ product.price }} грн</p>
+        </div>
+        <a href="{{ url_for('shop.add_to_cart', product_id=product.id) }}" class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            Купити
+        </a>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- Pagination controls -->
+<div class="pagination">
+    {% if page > 1 %}
+        <a href="{{ url_for('shop.shop', page=page-1) }}">« Попередня</a>
+    {% endif %}
+    
+    <span>Сторінка {{ page }} з {{ total_pages }}</span>
+    
+    {% if page < total_pages %}
+        <a href="{{ url_for('shop.shop', page=page+1) }}">Наступна »</a>
+    {% endif %}
+</div>
+
+{% endblock %}

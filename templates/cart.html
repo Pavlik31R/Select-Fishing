@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+{% block title %}Кошик{% endblock %}
+{% block content %}
+<h1 class="text-3xl font-bold mb-4">Кошик</h1>
+
+<style>
+    html, body {
+        height: 100%; 
+        margin: 0; 
+    }
+
+    body {
+        background-image: url('/static/images/фон.jpg');
+        background-size: cover; 
+        background-position: center; 
+        background-repeat: no-repeat; 
+        background-attachment: fixed; 
+    }
+
+    table, th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+
+    th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+    }
+
+    .form-container {
+        background-color: rgba(255, 255, 255, 0.8);
+        padding: 20px;
+        border-radius: 8px;
+    }
+
+    #discounted-price-container {
+        display: none; /* Початково приховано */
+    }
+
+    .promo-message-success {
+        color: green;
+    }
+
+    .promo-message-error {
+        color: red;
+    }
+</style>
+
+{% if cart %}
+    <div class="form-container">
+        <table class="w-full mb-4">
+            <thead>
+                <tr>
+                    <th class="text-left">Товар</th>
+                    <th class="text-left">Ціна</th>
+                    <th class="text-left">Кількість</th>
+                    <th class="text-left">Всього</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart.values() %}
+                <tr>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.price }} грн</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.price * item.quantity }} грн</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <p class="text-xl font-bold mb-4">Загальна вартість: <span id="original-price">{{ total }} грн</span></p>
+        
+        <!-- Блок для ціни зі знижкою, прихований за замовчуванням -->
+        <p id="discounted-price-container" class="text-xl font-bold mb-4">Ціна зі знижкою: <span id="discounted-price">{{ discounted_price if discounted_price else total }} грн</span></p>
+        
+        <!-- Поле для введення промокоду -->
+        <label for="promo-code">Введіть промокод:</label>
+        <input type="text" id="promo-code" placeholder="Наприклад, 2024" class="w-full p-2 border rounded mb-4">
+        <button onclick="applyDiscount()" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+            Застосувати промокод
+        </button>
+        
+        <p id="promo-message" class="mt-2"></p>
+
+        <!-- Кнопка для очищення корзини -->
+        <form action="{{ url_for('clear_cart') }}" method="post" style="display: inline-block; margin-top: 10px;">
+            <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+                Очистити корзину
+            </button>
+        </form>
+
+        <!-- Кнопка для оплати -->
+        <form action="{{ url_for('shop.checkout') }}" method="post" style="display: inline-block; margin-top: 10px;">
+            <div class="mb-4">
+                <label for="email" class="block mb-2">Email:</label>
+                <input type="email" id="email" name="email" required class="w-full p-2 border rounded">
+            </div>
+            <div class="mb-4">
+                <label for="address" class="block mb-2">Адреса доставки:</label>
+                <textarea id="address" name="address" required class="w-full p-2 border rounded"></textarea>
+            </div>
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                Оплатити замовлення
+            </button>
+        </form>
+    </div>
+{% else %}
+    <p>Ваш кошик порожній.</p>
+{% endif %}
+
+<script>
+    function applyDiscount() {
+        const promoCode = document.getElementById("promo-code").value;
+        fetch("/apply_discount", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ promo_code: promoCode }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            const promoMessage = document.getElementById("promo-message");
+            if (data.success) {
+                // Відображаємо ціну зі знижкою і повідомлення про успішне застосування промокоду
+                document.getElementById("discounted-price").textContent = data.discounted_price + " грн";
+                promoMessage.textContent = "Промокод застосовано!";
+                promoMessage.classList.add("promo-message-success");
+                promoMessage.classList.remove("promo-message-error");
+                document.getElementById("discounted-price-container").style.display = "block"; // Показати ціну зі знижкою
+            } else {
+                promoMessage.textContent = data.message;
+                promoMessage.classList.add("promo-message-error");
+                promoMessage.classList.remove("promo-message-success");
+            }
+        })
+        .catch(error => console.error("Помилка:", error));
+    }
+</script>
+
+{% endblock %}
+

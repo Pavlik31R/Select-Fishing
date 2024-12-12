@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Наша команда{% endblock %}
+
+{% block content %}
+<h1 class="text-3xl font-bold mb-4">Наша команда</h1>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6"> 
+    <div class="text-center">
+        <img src="/static/images/булько.jpg" alt="Placeholder" class="w-full rounded-lg shadow-md">
+        <p class="text-lg mt-4 font-semibold">Федір Булько</p>
+        <p class="text-md">Посада: Засновник бренду</p> 
+        <p class="text-lg mt-2">Колись Федя захотів створити собі комплект для змагань, а далі як у тумані. За 10 років йому вдалося зростити Select до великого риболовного бренду, який обирають рибалки по всьому світу.</p>
+    </div>
+    <div class="text-center">
+        <img src="/static/images/лясоцький.jpg" alt="Placeholder" class="w-full rounded-lg shadow-md">
+        <p class="text-lg mt-4 font-semibold">Павло Лясоцький</p>
+        <p class="text-md">Посада: тестувальник Select, ведучий YouTube-каналу «ІБІС. Риболовля та туризм»</p> 
+        <p class="text-lg mt-2">Даєш Паші новинку на затест – отримуєш потужний фідбек і круті пропозиції. Перед запуском снасті Select завжди проходять сувору перевірку професіоналами.</p>
+    </div>
+    <div class="text-center">
+        <img src="/static/images/мосійчук.jpg" alt="Placeholder" class="w-full rounded-lg shadow-md">
+        <p class="text-lg mt-4 font-semibold">Михайло Мосійчук</p>
+        <p class="text-md">Посада: простафер Select, блогер</p> 
+        <p class="text-lg mt-2">Вже палець болить лайкати Мішині трофеї в Інсті. Але щоразу приємно, що зловлені вони на силікон і воблери Select.</p>
+    </div>
+</div>
+<style>
+    html, body {
+        height: 100%; 
+        margin: 0; 
+    }
+
+    body {
+        background-image: url('/static/images/rivermain.jpeg');
+        background-size: cover; 
+        background-position: center; 
+        background-repeat: no-repeat; 
+        background-attachment: fixed; 
+    }
+
+    .content-wrapper {
+        background-color: rgba(255, 255, 255, 0.8); 
+        padding: 20px; 
+        border-radius: 8px;
+    }
+</style>
+{% endblock %}
+

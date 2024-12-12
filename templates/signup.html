@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div 
+    class="container" 
+    style="max-width: 500px; margin: 50px auto; background: url('/static/images/фон.jpg') no-repeat center center; background-size: cover; padding: 50px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+    <div class="box" style="background-color: rgba(255, 255, 255, 0.9); border-radius: 10px; padding: 30px;">
+        <h3 class="title has-text-centered has-text-weight-bold" style="font-size: 1.8rem;">Реєстрація</h3>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul style="margin-top: 20px;">
+                {% for category, message in messages %}
+                    <li class="{{ category }}" style="color: red; margin-bottom: 10px;">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        {% endwith %}
+
+        <form method="POST" action="{{ url_for('auth.signup') }}" style="margin-top: 20px;">
+            <div class="field" style="margin-bottom: 25px;">
+                <label class="label has-text-weight-semibold">Електронна пошта</label>
+                <div class="control">
+                    <input 
+                        class="input" 
+                        type="email" 
+                        name="email" 
+                        placeholder="Ваша електронна пошта" 
+                        required
+                        style="border: 2px solid #3273dc; border-radius: 8px; padding: 10px;">
+                </div>
+            </div>
+
+            <div class="field" style="margin-bottom: 25px;">
+                <label class="label has-text-weight-semibold">Ім'я</label>
+                <div class="control">
+                    <input 
+                        class="input" 
+                        type="text" 
+                        name="name" 
+                        placeholder="Ваше ім'я" 
+                        required
+                        style="border: 2px solid #3273dc; border-radius: 8px; padding: 10px;">
+                </div>
+            </div>
+
+            <div class="field" style="margin-bottom: 25px;">
+                <label class="label has-text-weight-semibold">Пароль</label>
+                <div class="control">
+                    <input 
+                        class="input" 
+                        type="password" 
+                        name="password" 
+                        placeholder="Ваш пароль" 
+                        required
+                        style="border: 2px solid #3273dc; border-radius: 8px; padding: 10px;">
+                </div>
+            </div>
+
+            <button 
+                class="button is-large is-fullwidth" 
+                style="background-color: #ff6600; color: white; border-radius: 5px; margin-top: 20px;">
+                Зареєструватися
+            </button>
+        </form>
+        
+        <p style="margin-top: 20px; text-align: center; font-size: 0.9rem;">
+            Вже маєш акаунт? 
+            <a href="{{ url_for('auth.login') }}" style="color: #3273dc; text-decoration: underline;">Увійти</a>
+        </p>
+    </div>
+</div>
+{% endblock %}

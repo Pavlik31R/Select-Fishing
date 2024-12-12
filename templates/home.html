@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Головна{% endblock %}
+
+{% block content %}
+<h1 class="text-3xl font-bold mb-4">Ласкаво просимо на головну сторінку</h1>
+
+<style>
+    html, body {
+        height: 100%; 
+        margin: 0; 
+    }
+
+    body {
+        background-image: url('/static/images/rivermain.jpeg');
+        background-size: cover; 
+        background-position: center; 
+        background-repeat: no-repeat; 
+        background-attachment: fixed; 
+    }
+
+    .content-wrapper {
+        background-color: rgba(255, 255, 255, 0.8); 
+        padding: 20px; 
+        border-radius: 8px;
+    }
+</style>
+
+<div class="content-wrapper">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        <div>
+            <img src="/static/images/main.webp" alt="Placeholder" class="w-full rounded-lg shadow-md">
+        </div>
+        <div>
+            <p class="text-lg mb-4">
+                Ласкаво просимо до Select – фірми, що втілює в собі традиції та інновації у світі риболовлі. Ми віримо, що риболовля – це не лише хобі, а й філософія життя, яка вчить нас терпінню, спостережливості та гармонії з природою. Наша мета – створити для вас не просто інструменти, а й досвід, що наповнює кожну хвилину на воді.
+            </p>
+
+            
+            <video controls class="w-full rounded-lg shadow-md" poster="/static/images/прев'ю.jpg">
+                <source src="/static/videos/videoplayback (2).mp4" type="video/mp4">
+                Ваш браузер не підтримує відео-тег.
+            </video>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

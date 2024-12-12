@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Деталі замовлення{% endblock %}
+{% block content %}
+<h1 class="text-3xl font-bold mb-4">Деталі замовлення #{{ order['id'] }}</h1>
+<p><strong>Email:</strong> {{ order['email'] }}</p>
+<p><strong>Адреса:</strong> {{ order['address'] }}</p>
+<p><strong>Загальна сума:</strong> {{ order['total_price'] }} грн</p>
+<p><strong>Статус:</strong> {{ order['status'] }}</p>
+<p><strong>Дата:</strong> {{ order['date'] }}</p>
+
+<h2 class="text-2xl font-bold mt-6 mb-2">Товари в замовленні</h2>
+<table class="w-full mb-6">
+    <thead>
+        <tr>
+            <th class="text-left">Назва</th>
+            <th class="text-left">Ціна</th>
+            <th class="text-left">Кількість</th>
+            <th class="text-left">Сума</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in items %}
+        <tr>
+            <td>{{ item['name'] }}</td>
+            <td>{{ item['price'] }} грн</td>
+            <td>{{ item['quantity'] }}</td>
+            <td>{{ item['price'] * item['quantity'] }} грн</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h2 class="text-2xl font-bold mb-2">Змінити статус замовлення</h2>
+<form action="{{ url_for('admin.update_order', order_id=order['id']) }}" method="post" class="mb-4">
+    <select name="status" class="p-2 border rounded mr-2">
+        <option value="Нове" {% if order['status'] == 'Нове' %}selected{% endif %}>Нове</option>
+        <option value="В обробці" {% if order['status'] == 'В обробці' %}selected{% endif %}>В обробці</option>
+        <option value="Відправлено" {% if order['status'] == 'Відправлено' %}selected{% endif %}>Відправлено</option>
+        <option value="Доставлено" {% if order['status'] == 'Доставлено' %}selected{% endif %}>Доставлено</option>
+        <option value="Скасовано" {% if order['status'] == 'Скасовано' %}selected{% endif %}>Скасовано</option>
+    </select>
+    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Оновити статус</button>
+</form>
+
+<a href="{{ url_for('admin.admin') }}" class="text-blue-500 hover:underline">Повернутися до списку замовлень</a>
+{% endblock %}

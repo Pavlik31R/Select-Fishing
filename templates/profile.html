@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div 
+    class="container" 
+    style="max-width: 500px; margin: 50px auto; background: url('/static/images/фон.jpg') no-repeat center center; background-size: cover; padding: 50px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+    <div class="box" style="background-color: rgba(255, 255, 255, 0.9); border-radius: 10px; padding: 30px;">
+        <h3 class="title has-text-centered has-text-weight-bold" style="font-size: 1.8rem;">Профіль користувача</h3>
+        
+        <div style="margin-top: 20px;">
+            <p style="font-size: 1.2rem; font-weight: bold;">Вітаємо, {{ user.name }}!</p>
+            <p style="font-size: 1rem; margin: 10px 0;">Email: <strong>{{ user.email }}</strong></p>
+        </div>
+        
+        <div style="margin-top: 30px; text-align: center;">
+            <a 
+                href="{{ url_for('auth.logout') }}" 
+                class="button is-large" 
+                style="background-color: #ff6600; color: white; border-radius: 5px; padding: 10px 20px; text-decoration: none;">
+                Вийти
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

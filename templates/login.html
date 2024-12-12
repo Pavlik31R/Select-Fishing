@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div 
+    class="container" 
+    style="max-width: 500px; margin: 50px auto; background: url('/static/images/фон.jpg') no-repeat center center; background-size: cover; padding: 50px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+    <div class="box" style="background-color: rgba(255, 255, 255, 0.9); border-radius: 10px; padding: 30px;">
+        <h3 class="title has-text-centered has-text-weight-bold" style="font-size: 1.8rem;">Особистий кабінет</h3>
+        <form method="POST" action="/login" style="margin-top: 20px;">
+            <div class="field" style="margin-bottom: 25px;">
+                <label class="label has-text-weight-semibold">Електронна пошта</label>
+                <div class="control">
+                    <input 
+                        class="input" 
+                        type="email" 
+                        name="email" 
+                        placeholder="Введіть ваш email" 
+                        required
+                        style="border: 2px solid #3273dc; border-radius: 8px; padding: 10px;">
+                </div>
+            </div>
+
+            <div class="field" style="margin-bottom: 25px;">
+                <label class="label has-text-weight-semibold">Пароль</label>
+                <div class="control">
+                    <input 
+                        class="input" 
+                        type="password" 
+                        name="password" 
+                        placeholder="Введіть ваш пароль" 
+                        required
+                        style="border: 2px solid #3273dc; border-radius: 8px; padding: 10px;">
+                </div>
+            </div>
+
+            <div class="field is-flex is-justify-content-space-between" style="margin-bottom: 50px;">
+                <label class="checkbox">
+                    <input type="checkbox"> Запам'ятати мене
+                </label>
+                <a href="#" style="font-size: 0.9rem; text-decoration: underline;">Забули пароль?</a>
+            </div>
+
+            <div class="buttons is-flex is-justify-content-space-between">
+                <button 
+                    class="button is-large" 
+                    style="background-color: #ff6600; color: white; min-width: 48%; border-radius: 5px;">
+                    Увійти
+                </button>
+                <a 
+                    href="{{ url_for('auth.signup') }}" 
+                    class="button is-large" 
+                    style="color: #ff6600; border: 1px solid #ff6600; min-width: 48%; border-radius: 5px; text-align: center;">
+                    Зареєструватися
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

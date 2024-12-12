@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="uk" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Select Fishing{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .bar {
+            transition: all 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen bg-gray-100 font-sans leading-normal tracking-normal">
+    <header class="bg-gradient-to-r from-yellow-600 to-indigo-700 text-white shadow-lg">
+        <nav class="container mx-auto px-4 py-4">
+            <div class="flex flex-wrap justify-between items-center">
+                <a href="{{ url_for('home') }}" class="text-2xl font-bold hover:text-yellow-300 transition duration-300">Select Fishing</a>
+                
+                <button id="menu-toggle" class="lg:hidden focus:outline-none" aria-label="Відкрити меню">
+                    <div class="w-6 h-6 relative">
+                        <span class="bar absolute h-0.5 w-6 bg-white transform transition duration-300 ease-in-out"></span>
+                        <span class="bar absolute h-0.5 w-6 bg-white transform transition duration-300 ease-in-out mt-2"></span>
+                        <span class="bar absolute h-0.5 w-6 bg-white transform transition duration-300 ease-in-out mt-4"></span>
+                    </div>
+                </button>
+                
+                <ul id="menu" class="hidden w-full lg:flex lg:w-auto lg:space-x-6 flex-col lg:flex-row mt-4 lg:mt-0">
+                    <li><a href="{{ url_for('home') }}" class="block py-2 lg:py-0 hover:text-yellow-300 transition duration-300">Головна</a></li>
+                    <li><a href="{{ url_for('shop.shop') }}" class="block py-2 lg:py-0 hover:text-yellow-300 transition duration-300">Магазин</a></li>
+                    <li><a href="{{ url_for('shop.cart') }}" class="block py-2 lg:py-0 hover:text-yellow-300 transition duration-300">Кошик</a></li>
+                    <li><a href="{{ url_for('about') }}" class="block py-2 lg:py-0 hover:text-yellow-300 transition duration-300">Про нас</a></li>
+                    <li><a href="{{ url_for('team') }}" class="block py-2 lg:py-0 hover:text-yellow-300 transition duration-300">Наша команда</a></li>
+                    <li><a href="{{ url_for('feedback.feedback') }}" class="block py-2 lg:py-0 hover:text-yellow-300 transition duration-300">Зворотній зв'язок</a></li>
+                    <li><a href="{{ url_for('profile') }}" class="social-icon custom-button">Профіль</a></li>
+            </div>
+        </nav>
+    </header>
+
+    <main class="flex-grow container mx-auto px-4 py-8">
+        <div class="bg-white shadow-md rounded-lg p-6">
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+    <footer class="bg-gray-800 text-white py-4 mt-auto relative">
+        <div class="container mx-auto px-4 flex items-center justify-center">
+            <p class="text-center">&copy; 2024 Select. Всі права захищені.</p>
+            <div class="absolute right-4 flex space-x-4">
+                
+                <!-- Instagram -->
+                <a href="https://www.instagram.com/selectfishing_ukraine" target="_blank" aria-label="Instagram" class="social-icon instagram"></a>
+                
+                <!-- YouTube -->
+                <a href="https://www.youtube.com/@ibisfishingua/" target="_blank" aria-label="YouTube" class="social-icon youtube"></a>
+                
+                <!-- Telegram -->
+                <a href="https://t.me/ibis_fishing" target="_blank" aria-label="Telegram" class="social-icon telegram"></a>
+                
+            </div>
+        </div>
+    </footer>
+    <style>
+        /* Основні стилі для кнопок соціальних мереж */
+        .social-icon {
+            width: 40px; 
+            height: 40px;
+            background-size: cover;
+            border-radius: 50%;
+            display: inline-block;
+        }
+    
+        /* Індивідуальні стилі для кожної іконки */
+        .instagram {
+            background-image: url('/static/images/logo1.png'); 
+        }
+    
+        .youtube {
+            background-image: url('/static/images/logo2.png'); 
+        }
+    
+        .telegram {
+            background-image: url('/static/images/logo3.png'); 
+        }
+    </style>
+    
+    
+    
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.getElementById('menu-toggle');
+            const menu = document.getElementById('menu');
+            const bars = menuToggle.querySelectorAll('.bar');
+
+            menuToggle.addEventListener('click', function() {
+                menu.classList.toggle('hidden');
+                menu.classList.toggle('lg:flex');
+                bars[0].classList.toggle('rotate-45');
+                bars[0].classList.toggle('translate-y-2');
+                bars[1].classList.toggle('opacity-0');
+                bars[2].classList.toggle('-rotate-45');
+                bars[2].classList.toggle('-translate-y-2');
+                
+                if (menu.classList.contains('hidden')) {
+                    menuToggle.setAttribute('aria-expanded', 'false');
+                    menuToggle.setAttribute('aria-label', 'Відкрити меню');
+                } else {
+                    menuToggle.setAttribute('aria-expanded', 'true');
+                    menuToggle.setAttribute('aria-label', 'Закрити меню');
+                }
+            });
+
+            // Закриваємо меню при кліку поза ним на мобільних пристроях
+            document.addEventListener('click', function(event) {
+                if (window.innerWidth < 1024) { // lg breakpoint
+                    const isClickInside = menu.contains(event.target) || menuToggle.contains(event.target);
+                    if (!isClickInside && !menu.classList.contains('hidden')) {
+                        menu.classList.add('hidden');
+                        menu.classList.remove('lg:flex');
+                        bars[0].classList.remove('rotate-45', 'translate-y-2');
+                        bars[1].classList.remove('opacity-0');
+                        bars[2].classList.remove('-rotate-45', '-translate-y-2');
+                        menuToggle.setAttribute('aria-expanded', 'false');
+                        menuToggle.setAttribute('aria-label', 'Відкрити меню');
+                    }
+                }
+            });
+
+            // Перевіряємо розмір вікна при завантаженні та зміні розміру
+            function checkWindowSize() {
+                if (window.innerWidth >= 1024) {
+                    menu.classList.remove('hidden');
+                    menu.classList.add('lg:flex');
+                } else {
+                    menu.classList.add('hidden');
+                    menu.classList.remove('lg:flex');
+                }
+            }
+
+            window.addEventListener('resize', checkWindowSize);
+            checkWindowSize(); // Викликаємо функцію при завантаженні сторінки
+        });
+    </script>
+</body>
+</html>

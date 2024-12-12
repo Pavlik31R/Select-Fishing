@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block title %}Зворотній зв'язок{% endblock %}
+
+{% block content %}
+<h1 class="text-3xl font-bold mb-4">Зворотній зв'язок</h1>
+
+<style>
+    html, body {
+        height: 100%; 
+        margin: 0; 
+    }
+
+    body {
+        background-image: url('/static/images/фон.jpg') }}');
+        background-size: cover; 
+        background-position: center; 
+        background-repeat: no-repeat; 
+        background-attachment: fixed; 
+    }
+
+    .form-container {
+        background-color: rgba(255, 255, 255, 0.8); /* Напівпрозорий фон для форми */
+        padding: 20px; 
+        border-radius: 8px;
+    }
+</style>
+
+<div class="form-container max-w-lg mx-auto">
+    <form id="feedbackForm">
+        <div class="mb-4">
+            <label for="name" class="block text-gray-700 text-sm font-bold mb-2">Ім'я:</label>
+            <input type="text" id="name" name="name" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+        </div>
+        <div class="mb-4">
+            <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Email:</label>
+            <input type="email" id="email" name="email" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+        </div>
+        <div class="mb-6">
+            <label for="message" class="block text-gray-700 text-sm font-bold mb-2">Повідомлення:</label>
+            <textarea id="message" name="message" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline h-32"></textarea>
+        </div>
+        <div class="flex items-center justify-between">
+            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                Надіслати
+            </button>
+        </div>
+    </form>
+</div>
+
+<!-- Модальне вікно -->
+<div id="thankYouModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
+    <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+        <div class="mt-3 text-center">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">Дякуємо за ваш відгук!</h3>
+            <div class="mt-2 px-7 py-3">
+                <p class="text-sm text-gray-500">Ми цінуємо ваш час та увагу.</p>
+            </div>
+            <div class="items-center px-4 py-3">
+                <button id="closeModal" class="px-4 py-2 bg-blue-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300">
+                    Закрити
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('feedbackForm');
+    const modal = document.getElementById('thankYouModal');
+    const closeButton = document.getElementById('closeModal');
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Відправка даних на сервер за допомогою AJAX
+        fetch('{{ url_for("feedback.feedback") }}', {
+            method: 'POST',
+            body: new FormData(form),
+        })
+        .then(response => {
+            if (response.ok) {
+                modal.classList.remove('hidden');
+                form.reset();
+            } else {
+                alert('Виникла помилка при відправці форми. Будь ласка, спробуйте ще раз.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Виникла помилка при відправці форми. Будь ласка, спробуйте ще раз.');
+        });
+    });
+
+    closeButton.addEventListener('click', function() {
+        modal.classList.add('hidden');
+    });
+});
+</script>
+{% endblock %}
